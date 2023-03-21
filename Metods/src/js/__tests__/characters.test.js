@@ -5,9 +5,11 @@ import Undead from '../Undead';
 import Zombie from '../Zombie';
 import Daemon from '../Daemon';
 
-test('test new error name', () => {expect(()=> {new Boweman('R')}).toThrowError('Недопустима длинна имени, должно быть строка, min - 2 символа, max - 10');
+test('test new error name', () => {
+  expect(() => { new Boweman('R') }).toThrowError('Недопустима длинна имени, должно быть строка, min - 2 символа, max - 10');
 });
-test('test new error type', () => {expect(()=> {new Boweman('Robin', 'Bowerman')}).toThrowError('Тип должен быть один из типов (строка): Boweman, Swordsman, Magician, Daemon, Undead, Zombie');
+test('test new error type', () => {
+  expect(() => { new Boweman('Robin', 'Bowerman') }).toThrowError('Тип должен быть один из типов (строка): Boweman, Swordsman, Magician, Daemon, Undead, Zombie');
 });
 
 test('test create Boweman', () => {
@@ -92,4 +94,48 @@ test('test create Daemon', () => {
   };
 
   expect(character).toEqual(expected);
+});
+
+test('test levelUp method', () => {
+  const character = new Boweman('Aleksandr');
+  character.levelUp()
+  const expected = {
+    name: 'Aleksandr',
+    level: 2,
+    health: 100,
+    type: 'Boweman',
+    attack: 30,
+    defence: 30,
+  };
+
+  expect(character).toEqual(expected);
+});
+
+test('test new Error levelUp method', () => {
+  const character = new Boweman('Aleksandr');
+  character.health = 0;
+
+  expect(() => {character.levelUp()}).toThrowError('нельзя повысить левел умершего');
+});
+
+test('test damage method', () => {
+  const character = new Boweman('Aleksandr');
+  character.damage(40)
+  const expected = {
+    name: 'Aleksandr',
+    level: 1,
+    health: 70,
+    attack: 25,
+    defence: 25,
+    type: "Boweman"
+  };
+
+  expect(character).toEqual(expected);
+});
+
+test('test new error damage method', () => {
+  const character = new Boweman('Aleksandr');
+  character.health = 0;
+
+  expect(() => {character.damage(50)}).toThrowError('нельзя убить убитого');
 });
